@@ -22,10 +22,12 @@ class Decision:
         #print(out[2])
         #print(data)
 
+
     def Count(self,sett,listt):
         #root=[0 for k in range(3)]
         #print(listt.__len__())
         root = {}
+        print(listt)
         for value in sett:
             i=0
             cnt = 0
@@ -42,8 +44,9 @@ class Decision:
 
         print(root)
 
-        self.calculateEntropy(root)
-        return root
+        entropy=self.calculateEntropy(root)
+        print("en "+str(entropy))
+        return root,entropy
     def calculateEntropy(self,root):
         #sentro = -cn1 * math.log2(cn1 / cnt) - cn2 * math.log2(cn2 / cnt) - cn3 * math.log2(cn3 / cnt)
 
@@ -52,32 +55,57 @@ class Decision:
         while i<=root.__len__():
             #print(value/play.__len__()
             print(root.get(i))
-            value=root.get(i)
+            if root.get(i)!=0:
+                value=root.get(i)
             i+=1
             entro-=(value/play.__len__())*math.log2(value/play.__len__())
 
         print(entro)
+        return entro
 
     def Split(self):
-        calculateRootEntropy=self.Count(playSet,play)
+        print("sfas")
+        #calculateRootEntropy=self.Count(playSet,play)
         #print(calculateRoot)
         #calculateOutEntropy=self.rootCalc(outSet,out)
 
     def divideRoot(self):
-        left=list()
-        right=list()
 
+        diction={}
+
+        i=0
+        indx=0
         for value in outSet:
-            i=0
-            while i < out.__len__():
-                if value<out[i]:
-                    left.append(data[i])
-                else:
-                    right.append(data[i])
-                i+=1
+            leftData = list()
+            rightData = list()
+            left = list()
+            right = list()
+            print("i")
+            print(i)
+            j=0
+            print(value)
+            while j<out.__len__():
+                if out[j]<value:
+                    leftData.append(data[j])
+                    left.append(out[j])
 
-        print(left)
-        print(right)
+                    #ekhan theke class ber kore entropy ber korar function ke call korbo
+                    #entropy paile right tar o ber kore average kore information gain ber korbo
+                    #jodi ei info gain ager cheye beshi hoi tahole ei pura data list ta ke max e dhukai rakhbo
+                    #sathe kar jonno hoitese setao ber kore rakhbo
+                else:
+                    rightData.append(data[j])
+                    right.append(out[j])
+                j+=1
+            leftDict,leftEntropy=self.Count(playSet, left)
+            RightDict,rightEntropy=self.Count(playSet, right)
+            #print(leftDict)
+            avg=(leftEntropy+rightEntropy)/2
+            print(avg)
+            #self.Count(playSet, right)
+            #print(right.__len__())
+            i+=1
+            #print(left.__len__())
 
 
 data=list()
@@ -93,5 +121,5 @@ play = list()
 playSet = set()
 Decision().calculateRootEntropy()
 #Decision().rootCalc()
-Decision().Split()
+mainEntropy=Decision().Count(playSet,play)
 Decision().divideRoot()
